@@ -100,13 +100,35 @@ axios({
  * 浏览器本身支持直接传入 URLSearchParams | FormData 等类型对象
  * 会自动将请求添加一个合适的 Content-Type
  */
-const paramsString = 'q=URLUtils.searchParams&topic=api'
-const searchParams = new URLSearchParams(paramsString)
+// const paramsString = 'q=URLUtils.searchParams&topic=api'
+// const searchParams = new URLSearchParams(paramsString)
+
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: searchParams
+// })
+
 
 axios({
   method: 'post',
   url: '/base/post',
-  data: searchParams
+  data: {
+    message: 'hello I am unconfig request.responseType reponse data',
+    baz: 2
+  }
+}).then(res => {
+  console.log(res)
 })
 
-
+axios({
+  method: 'post',
+  url: '/base/post',
+  responseType: 'json',
+  data: {
+    message: 'hello I am request.responseType === \"json\" response data',
+    baz: 2
+  }
+}).then(res => {
+  console.log(res)
+})
