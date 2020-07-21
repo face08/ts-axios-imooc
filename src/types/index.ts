@@ -18,19 +18,20 @@ export type Method =
  * axios配置接口类型
  */
 export interface AxiosRequestConfig {
-  url: string
+  url?: string
   method?: Method
   params?: any
   data?: any
   headers?: any
   responseType?: XMLHttpRequestResponseType
+  timeout?: number
 }
 
 /**
  * axios响应接口类型
  */
-export interface AxiosResponse {
-  data: any
+export interface AxiosResponse<T = any> {
+  data: T
   status: number
   statusText: string
   headers: any
@@ -38,4 +39,39 @@ export interface AxiosResponse {
   request: any
 }
 
-export interface AxiosPromise extends Promise<AxiosResponse> {}
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
+
+/**
+ * Error接口
+ */
+export interface AxiosError extends Error {
+  config: AxiosRequestConfig
+  code?: string
+  request?: any
+  response?: AxiosResponse
+  isAxiosError: boolean
+}
+
+export interface Axios {
+  request<T = any>(config?: AxiosRequestConfig): AxiosPromise<T>
+
+  get<T>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  delete<T>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  head<T>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  options<T>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  post<T>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  put<T>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  patch<T>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+export interface AxiosInstance extends Axios {
+  <T>(config: AxiosRequestConfig): AxiosPromise<T>
+
+  <T>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
