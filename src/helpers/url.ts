@@ -51,3 +51,34 @@ export function buildUrl(url: string, params?: any): string {
   }
   return url
 }
+
+interface URLOrigin {
+  protocol: string
+  host: string
+}
+
+export function isURLSameOrigin(requestURL: string): boolean {
+  debugger
+  const { protocol, host } = resolveURL(requestURL)
+  return protocol === currentOrigin.protocol && host === currentOrigin.host
+}
+
+const urlParseNode = document.createElement('a')
+const currentOrigin = resolveURL(window.location.href)
+
+function resolveURL(url: string): URLOrigin {
+  urlParseNode.setAttribute('href', url)
+  const { protocol, host } = urlParseNode
+  return {
+    protocol,
+    host
+  }
+}
+
+export function isAbsoluteURL(url: string): boolean {
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
+}
